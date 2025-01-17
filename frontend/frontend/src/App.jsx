@@ -1,16 +1,22 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import Dashboard from './Componentes/Dashboardadmin.jsx'
+import AdminLogin from './Componentes/AdminLogin.jsx'
+import UserSubmissionForm from './Componentes/UserSubmissionForm.jsx'
 import './App.css'
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-<h1 className='bg-red-500'>hello</h1>
+      <Routes>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/adminlogin" element={<AdminLogin />} />
+        <Route path="/" element={<UserSubmissionForm />} />
+      </Routes>
     </>
-  )
+  );
 }
 
 export default App
