@@ -1,4 +1,5 @@
 const userModel = require('../models/Usermodel');
+const cloudinary = require('cloudinary').v2;
 
 const adduser = async (req, res) => {
     try {
@@ -22,11 +23,18 @@ const adduser = async (req, res) => {
             });
         }
 
+           let imagesUrl = await Promise.all(
+            images.map(async(item)=>{
+                let result = await cloudinary.uploader.upload(item.path,{resource_type:'image'});
+                return result.secure_url; 
+            })
+        )
+
         // Save user to the database
         const user = new userModel({
             name,
             social,
-            image: images
+            image: imagesUrl
         });
 
         await user.save();

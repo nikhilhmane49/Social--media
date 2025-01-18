@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { adduser } =require('../controller/usercontroller.js');
-const  upload  = require('../midellware/multer');
+const  upload  = require('../midellware/multer.js');
 
 const userrouter = express.Router();
 

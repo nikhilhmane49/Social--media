@@ -1,44 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { Admincontext } from "../Context/Context.jsx";
 
 const Dashboardadmin = () => {
-  const [userSubmissions, setUserSubmissions] = useState([]);
+  const { user, atoken, getalluser } = useContext(Admincontext);
+  
   const [loading, setLoading] = useState(true);
 
-  // Simulating fetching data from a database
-//   useEffect(() => {
-//     // Replace this with your actual API call
-//     setTimeout(() => {
-//       const mockData = [
-//         {
-//           id: 1,
-//           name: "John Doe",
-//           socialMediaHandle: "@johndoe",
-//           images: [
-//             "https://via.placeholder.com/150",
-//             "https://via.placeholder.com/150",
-//           ],
-//         },
-//         {
-//           id: 2,
-//           name: "Jane Smith",
-//           socialMediaHandle: "@janesmith",
-//           images: ["https://via.placeholder.com/150"],
-//         },
-//         {
-//           id: 3,
-//           name: "Alex Johnson",
-//           socialMediaHandle: "@alexj",
-//           images: [
-//             "https://via.placeholder.com/150",
-//             "https://via.placeholder.com/150",
-//             "https://via.placeholder.com/150",
-//           ],
-//         },
-//       ];
-//       setUserSubmissions(mockData);
-//       setLoading(false);
-//     }, 2000);
-//   }, []);
+  useEffect(() => {
+    setLoading(false); // Simulate loading completion when user data is fetched
+  }, [user]);
+
+  useEffect(() => {
+        if (atoken) {
+            getalluser();
+    }
+},[atoken])
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-50 to-indigo-50 p-6">
@@ -59,40 +35,58 @@ const Dashboardadmin = () => {
               User Submissions
             </h2>
 
-            {userSubmissions.length === 0 ? (
+            {user.length === 0 ? (
               <p className="text-gray-500 text-center">No submissions found.</p>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {userSubmissions.map((user) => (
+                {user.map((userItem, index) => (
                   <div
-                    key={user.id}
+                    key={index}
                     className="border border-gray-300 rounded-lg p-6 bg-gradient-to-r from-white to-gray-50 shadow-lg transform hover:scale-105 transition-all duration-300"
                   >
                     <h3 className="text-xl font-bold text-gray-800 mb-4">
-                      {user.name}
+                      {userItem.name}
                     </h3>
                     <p className="text-sm text-gray-600 mb-4">
                       Handle:{" "}
                       <span className="text-blue-500 font-medium">
-                        {user.socialMediaHandle}
+                        {userItem.social}
                       </span>
                     </p>
                     <div className="flex gap-3 flex-wrap">
-                      {user.images.map((image, index) => (
-                        <a
-                          key={index}
-                          href={image}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hover:opacity-80 transition-opacity"
-                        >
-                          <img
-                            src={image}
-                            alt={`Submission by ${user.name}`}
-                            className="w-24 h-24 object-cover rounded-lg border border-gray-200 shadow-md hover:shadow-xl"
-                          />
-                        </a>
-                      ))}
+                      {Array.isArray(userItem.image) &&
+                        userItem.image.map((image, index) => (
+                          <a
+                            key={index}
+                            href={userItem.image.image1}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:opacity-80 transition-opacity"
+                          >
+                            <img
+                              src={image}
+                              alt={`Submission by ${userItem.name}`}
+                              className="w-24 h-24 object-cover rounded-lg border border-gray-200 shadow-md hover:shadow-xl"
+                            />
+                          </a>
+                        ))}
+{/* 
+                      {userItem.image &&
+                        Object.keys(userItem.image).map((key, index) => (
+                          <a
+                            key={index}
+                            href={userItem.image[key]}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:opacity-80 transition-opacity"
+                          >
+                            <img
+                              src={userItem.image[key]}
+                              alt={`Submission by ${userItem.name}`}
+                              className="w-24 h-24 object-cover rounded-lg border border-gray-200 shadow-md hover:shadow-xl"
+                            />
+                          </a>
+                        ))} */}
                     </div>
                   </div>
                 ))}
